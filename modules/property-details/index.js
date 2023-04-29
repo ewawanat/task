@@ -39,67 +39,100 @@ const Detail = ({}) => {
   if (account.associatedMortgages.length) {
     mortgage = account.associatedMortgages[0];
   }
-
+  const purchaseDate = format(new Date(account.originalPurchasePriceDate), 'MMMM yyyy' );
+  const sincePurchaseRawNumber = account.recentValuation.amount - account.originalPurchasePrice;
+  const sincePurchasePercentage = (sincePurchaseRawNumber / account.originalPurchasePrice) * 100;
+  const numberOfYearsSincePurchase = parseInt(format(new Date(account.lastUpdate), 'yyyy')) - parseInt(format(new Date(account.originalPurchasePriceDate), 'yyyy'));
+  const annualAppreciation = sincePurchasePercentage/ numberOfYearsSincePurchase;
   return (
-    <Inset>
-      <AccountSection>
-        <AccountLabel>Estimated Value</AccountLabel>
-        <AccountHeadline>
-          {new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP",
-          }).format(account.recentValuation.amount)}
-        </AccountHeadline>
-        <AccountList>
-          <AccountListItem><InfoText>
-            {`Last updated ${format(lastUpdate, "do MMM yyyy")}`}
-          </InfoText></AccountListItem>
-          <AccountListItem><InfoText>
-            {`Next update ${format(
-              add(lastUpdate, { days: account.updateAfterDays }),
-              "do MMM yyyy"
-            )}`}
-          </InfoText></AccountListItem>
-        </AccountList>
-      </AccountSection>
-      <AccountSection>
-        <AccountLabel>Property details</AccountLabel>
-        <RowContainer>
-          <AccountList>
-            <AccountListItem><InfoText>{account.name}</InfoText></AccountListItem>
-            <AccountListItem><InfoText>{account.bankName}</InfoText></AccountListItem>
-            <AccountListItem><InfoText>{account.postcode}</InfoText></AccountListItem>
-          </AccountList>
-        </RowContainer>
-      </AccountSection>
-      {mortgage && (
+      <Inset>
         <AccountSection>
-          <AccountLabel>Mortgage</AccountLabel>
-          <RowContainer
-            // This is a dummy action
-            onClick={() => alert("You have navigated to the mortgage page")}
-          >
+          <AccountLabel>Estimated Value</AccountLabel>
+          <AccountHeadline>
+            {new Intl.NumberFormat("en-GB", {
+              style: "currency",
+              currency: "GBP",
+            }).format(account.recentValuation.amount)}
+          </AccountHeadline>
+          <AccountList>
+            <AccountListItem><InfoText>
+              {`Last updated ${format(lastUpdate, "do MMM yyyy")}`}
+            </InfoText></AccountListItem>
+            <AccountListItem><InfoText>
+              {`Next update ${format(
+                  add(lastUpdate, { days: account.updateAfterDays }),
+                  "do MMM yyyy"
+              )}`}
+            </InfoText></AccountListItem>
+          </AccountList>
+        </AccountSection>
+        <AccountSection>
+          <AccountLabel>Property details</AccountLabel>
+          <RowContainer>
             <AccountList>
-              <AccountListItem><InfoText>
-                {new Intl.NumberFormat("en-GB", {
-                  style: "currency",
-                  currency: "GBP",
-                }).format(
-                  Math.abs(account.associatedMortgages[0].currentBalance)
-                )}
-              </InfoText></AccountListItem>
-              <AccountListItem><InfoText>{account.associatedMortgages[0].name}</InfoText></AccountListItem>
+              <AccountListItem><InfoText>{account.name}</InfoText></AccountListItem>
+              <AccountListItem><InfoText>{account.bankName}</InfoText></AccountListItem>
+              <AccountListItem><InfoText>{account.postcode}</InfoText></AccountListItem>
             </AccountList>
           </RowContainer>
         </AccountSection>
-      )}
-      <Button
-        // This is a dummy action
-        onClick={() => alert("You have navigated to the edit account page")}
-      >
-        Edit account
-      </Button>
-    </Inset>
+        <AccountSection>
+          <AccountLabel>Valuation Change</AccountLabel>
+          <RowContainer
+              onClick={() => alert("You have navigated to the valuation change page")}>
+            <AccountList>
+              <AccountListItem>
+                <InfoText>
+                  {`Purchased for ${new Intl.NumberFormat("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  }).format(account.originalPurchasePrice)} in ${purchaseDate}`}
+                </InfoText>
+              </AccountListItem>
+              <AccountListItem>
+                <InfoText>
+                  {`Since purchase ${new Intl.NumberFormat("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  }).format(sincePurchaseRawNumber)} ${sincePurchasePercentage}%` }
+                </InfoText>
+              </AccountListItem>
+              <AccountListItem>
+                <InfoText>
+                  {`Annual appreciation ${annualAppreciation}%` }
+                </InfoText>
+              </AccountListItem>
+            </AccountList>
+          </RowContainer>
+        </AccountSection>
+        {mortgage && (
+            <AccountSection>
+              <AccountLabel>Mortgage</AccountLabel>
+              <RowContainer
+                  // This is a dummy action
+                  onClick={() => alert("You have navigated to the mortgage page")}
+              >
+                <AccountList>
+                  <AccountListItem><InfoText>
+                    {new Intl.NumberFormat("en-GB", {
+                      style: "currency",
+                      currency: "GBP",
+                    }).format(
+                        Math.abs(account.associatedMortgages[0].currentBalance)
+                    )}
+                  </InfoText></AccountListItem>
+                  <AccountListItem><InfoText>{account.associatedMortgages[0].name}</InfoText></AccountListItem>
+                </AccountList>
+              </RowContainer>
+            </AccountSection>
+        )}
+        <Button
+            // This is a dummy action
+            onClick={() => alert("You have navigated to the edit account page")}
+        >
+          Edit account
+        </Button>
+      </Inset>
   );
 };
 

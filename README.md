@@ -31,9 +31,30 @@ Consider opportunities to reduce repetition in the code and increase legibility
 
 We also ask that you update the readme with answers to the following questions 
 
-1. Given more time, what other changes you would have liked to make?
-2. What UX or design improvements or alterations might you suggest? These can be to existing components or completely new ideas.
+1. Given more time, what other changes you would have liked to make? 
 
+##### Ewa's Answer:
+
+     - Move each section to a separate section component, like I did for e.g. valuation.js; With a small app like this, it doesn't seem like an issue to have it all the way it is currently, but when it grows it will become more and more complex and confusing to have one big component, and will be easier to manage & maintain separate sections (and will also help avoid conflicts when multiple devs work on the same page, for example)
+     - I know it is a choice to have all styled components in one file, so I tried to follow that pattern, however, when the application becomes bigger, it will become more diffiuclt to maintain these components, for the same reasons as above, and I'd probably suggest moving the styled components into their respective component files or folders
+     - For this simple API data example this did not seem necessary, but in real life where there’s a lot of data, I would first transform/normalise the data by using models and putting that data through a model before using it in the components; this would involve flattening any nested objects and arrays, converting dates to a format they are required to be in etc; it would also allow any null or undefined values to be better handled if, e.g. they were made to have values of empty strings and thus would help avoid unexpected app crashes
+     - Add tests to all components using react testing library & jest as well as axe for accessibility testing and snapshots in order to help catch any unexpected changes to the components  - I would add a test rendering the components; all this would help catch bugs and also give the developers more confidence in their code;
+     - Use ESLint to make sure the style the code is in is consistent and also Prettier to enforce those rules
+     - Make a content file where we would put everything that is displayed in each component so that the app could be easily translated into other languages
+     - I'd also suggest having a src folder at the top and move components, helper-functions, modules, pages and styles into it
+
+- Otherwise, I would possibly think of displaying 'status' on this component; I am not entirely sure what this data means, but I am assuming there is some scale which indicates how good the increase in property value is; this would be an interesting bit of info for the user;
+- A bit of data that isn't currently in the API data, but would be interesting to the user is prediction for the future changes in value of the property;
+
+2. What UX or design improvements or alterations might you suggest? These can be to existing components or completely new ideas.
+##### Ewa's Answer:
+     - Put in spinners for when data is loading
+     - Add animations, or highlighting, e.g. on hover the RowContainer could be slightly highlighted
+     - Clicking on the row container is not ideal - I would have a button for each of these making sure that the user knows they will navigate somewhere if they click it rather than it just happening  - also buttons will be better for accessibility
+     - Add icons to where they make sense, e.g. to account list items so the information is more visually appealing
+     - Add tooltips to give any explanations or additional information that may be useful for the user (e.g. what is appreciation? Not everyone might know that terminology)
+     - Offer a dark mode version for better user experience/accessibility
+     - Add responsive design e.g. for different screen sizes, by adding media queries to styles
 ----
 
 **Optional**: If you have time, show us some more by fetching the data from the api
